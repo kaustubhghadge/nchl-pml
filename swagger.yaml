@@ -1,7 +1,8 @@
 openapi: 3.0.3
 info:
   title: NCHL PML API
-  description: This is a sample NCHL PML API Server based on the OpenAPI 3.0 specification.
+  description: |-
+    This is a sample NCHL PML API Server based on the OpenAPI 3.0 specification. 
   contact:
     email: kaustubh.ghadge@indicadigital.com
   version: 1.0.0
@@ -13,109 +14,13 @@ paths:
       summary: Get best interest rate
       description: Get best interest rate
       security:
-        - basicAuth: []
+          - basicAuth: []
       requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
             schema:
-              type: object
-              properties:
-                zip:
-                  type: integer
-                  format: int64
-                  description: Property Zip Code
-                  example: 60622
-                city:
-                  type: string
-                  description: Property City
-                  example: Chicago
-                state:
-                  type: string
-                  enum:
-                    - AL
-                    - AK
-                    - AZ
-                    - AR
-                    - CA
-                    - CO
-                    - CT
-                    - DE
-                    - DC
-                    - FL
-                    - GA
-                    - HI
-                    - ID
-                    - IL
-                    - IN
-                    - IA
-                    - KS
-                    - KY
-                    - LA
-                    - ME
-                    - MD
-                    - MA
-                    - MI
-                    - MN
-                    - MS
-                    - MO
-                    - MT
-                    - NE
-                    - NV
-                    - NH
-                    - NJ
-                    - NM
-                    - NY
-                    - NC
-                    - ND
-                    - OH
-                    - OK
-                    - OR
-                    - PA
-                    - RI
-                    - SC
-                    - SD
-                    - TN
-                    - TX
-                    - UT
-                    - VT
-                    - VA
-                    - WA
-                    - WV
-                    - WI
-                    - WY
-                  description: Property State
-                  example: IL
-                credit_score:
-                  type: integer
-                  format: int64
-                  minimum: 380
-                  maximum: 850
-                  description: Credit Score of the User
-                  example: 740
-                purchase_price:
-                  type: number
-                  format: double
-                  description: Purchase Price of the Property
-                  example: 475000
-                down_payment_dollar:
-                  type: number
-                  format: double
-                  description: Down Payment In Dollar Amount
-                  example: 25000
-                down_payment_percentage:
-                  type: number
-                  format: double
-                  description: Down Payment In Percentage
-                  example: 5
-                loan_program_type:
-                  type: string
-                  enum:
-                    - FHA
-                    - VA
-                    - Conventional
-                  description: Down Payment In Percentage
-                  example: FHA
+              $ref: '#/components/schemas/BestRateRequest'
             example:
               zip: 60622
               city: Chicago
@@ -131,44 +36,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  loan_program:
-                    name:
-                      type: string
-                      description: Type of Loan Program
-                      example: 30 YR FIXED CONFORMING
-                    status:
-                      type: string
-                      description: Status of Borrower's Eligibility
-                      example: Eligible
-                    term:
-                      type: number
-                      description: Loan Term
-                      example: 360
-                    rate_options:
-                      type: object
-                      properties:
-                        rate:
-                          type: number
-                          format: double
-                          description: Interest Rate
-                          example: 8.125
-                        points:
-                          type: number
-                          format: double
-                          descriptions: Points
-                          example: -1.625
-                        apr:
-                          type: number
-                          format: double
-                          description: APR
-                          example: 8.539
-                        payments:
-                          type: number
-                          format: double
-                          descrition: Monthly Payments
-                          example: 3526.66
+               $ref: '#/components/schemas/BestRateResponse'
               example:
                 loan_program: 30 YR FIXED CONFORMING
                 status: Eligible
@@ -180,115 +48,65 @@ paths:
                   payments: 3526.66
         '401':
           description: Authorization information is missing or invalid.
+
         '405':
           description: Invalid input.
-        5xx:
+
+        '500':
           description: Unexpected error.
+
+  
 components:
   schemas:
     BestRateRequest:
       type: object
       properties:
-        zip:
+        zip:  # <!--- form field name
           type: integer
           format: int64
           description: Property Zip Code
           example: 60622
-        city:
+        city:  
           type: string
           description: Property City
           example: Chicago
-        state:
+        state:  
           type: string
-          enum:
-            - AL
-            - AK
-            - AZ
-            - AR
-            - CA
-            - CO
-            - CT
-            - DE
-            - DC
-            - FL
-            - GA
-            - HI
-            - ID
-            - IL
-            - IN
-            - IA
-            - KS
-            - KY
-            - LA
-            - ME
-            - MD
-            - MA
-            - MI
-            - MN
-            - MS
-            - MO
-            - MT
-            - NE
-            - NV
-            - NH
-            - NJ
-            - NM
-            - NY
-            - NC
-            - ND
-            - OH
-            - OK
-            - OR
-            - PA
-            - RI
-            - SC
-            - SD
-            - TN
-            - TX
-            - UT
-            - VT
-            - VA
-            - WA
-            - WV
-            - WI
-            - WY
+          enum: [AL,AK,AZ,AR,CA,CO,CT,DE,DC,FL,GA,HI,ID,IL,IN,IA,KS,KY,LA,ME,MD,MA,MI,MN,MS,MO,MT,NE,NV,NH,NJ,NM,NY,NC,ND,OH,OK,OR,PA,RI,SC,SD,TN,TX,UT,VT,VA,WA,WV,WI,WY]
           description: Property State
           example: IL
-        credit_score:
+        credit_score:    # <!--- form field name
           type: integer
           format: int64
           minimum: 380
           maximum: 850
           description: Credit Score of the User
           example: 740
-        purchase_price:
+        purchase_price:  # <!--- form field name
           type: number
           format: double
           description: Purchase Price of the Property
           example: 475000
-        down_payment_dollar:
-          type: number
-          format: double
-          description: Down Payment In Dollar Amount
-          example: 25000
-        down_payment_percentage:
-          type: number
-          format: double
-          description: Down Payment In Percentage
-          example: 5
-        loan_program_type:
-          type: string
-          enum:
-            - FHA
-            - VA
-            - Conventional
-          description: Down Payment In Percentage
-          example: FHA
+        down_payment_dollar:  # <!--- form field name
+           type: number
+           format: double
+           description: Down Payment In Dollar Amount
+           example: 25000
+        down_payment_percentage:  # <!--- form field name
+           type: number
+           format: double
+           description: Down Payment In Percentage
+           example: 5
+        loan_program_type:  # <!--- Custom field
+            type: string
+            enum: [FHA, VA, Conventional]
+            description: Down Payment In Percentage
+            example: FHA
+      
     BestRateResponse:
-      type: object
-      properties:
-        loan_program:
-          name:
+        type: object
+        properties:
+          loan_program:
             type: string
             description: Type of Loan Program
             example: 30 YR FIXED CONFORMING
@@ -302,16 +120,16 @@ components:
             example: 360
           rate_options:
             type: object
-            properties:
+            properties: 
               rate:
                 type: number
                 format: double
                 description: Interest Rate
                 example: 8.125
-              points:
+              points: 
                 type: number
                 format: double
-                descriptions: Points
+                description: Points
                 example: -1.625
               apr:
                 type: number
@@ -321,8 +139,9 @@ components:
               payments:
                 type: number
                 format: double
-                descrition: Monthly Payments
+                description: Monthly Payments
                 example: 3526.66
+
   securitySchemes:
     basicAuth:
       type: http
